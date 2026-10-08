@@ -1,0 +1,9 @@
+.git
+.agents
+.codex
+.env
+.env.*
+!.env.example
+target
+backups
+*.log

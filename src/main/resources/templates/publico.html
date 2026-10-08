@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title th:text="${negocio}+' · Tu vehículo'">Tu vehículo</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/publico.js" defer></script>
+    <link rel="icon" href="/img/marca.svg" type="image/svg+xml" />
+  </head>
+  <body class="public-page" th:attr="data-modo=${modo},data-token=${token}">
+    <header class="public-header">
+      <span class="brand-mark">T</span
+      ><strong th:text="${negocio}">Mi taller</strong
+      ><span class="connection" id="connection">Conectando…</span>
+    </header>
+    <main class="public-main" id="public-content" aria-live="polite">
+      <div class="empty">Consultando tu vehículo…</div>
+    </main>
+    <footer class="public-footer">
+      Información actualizada por tu taller.<br /><span id="last-update"></span>
+    </footer>
+  </body>
+</html>

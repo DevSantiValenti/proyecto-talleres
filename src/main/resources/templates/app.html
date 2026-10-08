@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="csrf-token" th:content="${_csrf.token}" />
+    <meta name="csrf-header" th:content="${_csrf.headerName}" />
+    <title th:text="${negocio}">Mi taller</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/app.js" defer></script>
+    <link rel="icon" href="/img/marca.svg" type="image/svg+xml" />
+  </head>
+  <body th:attr="data-modo=${modo},data-rol=${rol}">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="/"
+        ><span class="brand-mark">T</span
+        ><span th:text="${negocio}">Mi taller</span></a
+      >
+      <p class="nav-caption">ESPACIO DE TRABAJO</p>
+      <button
+        type="button"
+        id="menu-close"
+        class="mobile-menu"
+        aria-label="Cerrar menú"
+      >
+        Cerrar menú
+      </button>
+      <nav id="navigation" aria-label="Navegación principal"></nav>
+      <div class="sidebar-bottom">
+        <div
+          class="avatar"
+          th:text="${usuarioActual.substring(0,1).toUpperCase()}"
+        >
+          A
+        </div>
+        <div>
+          <strong th:text="${usuarioActual}">Administrador</strong
+          ><small th:text="${rol}">ADMIN</small>
+        </div>
+        <form th:action="@{/logout}" method="post">
+          <button
+            class="icon-button"
+            title="Cerrar sesión"
+            aria-label="Cerrar sesión"
+          >
+            ↪
+          </button>
+        </form>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <button
+          class="icon-button mobile-menu"
+          id="menu-toggle"
+          aria-label="Abrir menú"
+        >
+          ☰</button
+        ><span id="breadcrumb">Taller / Órdenes</span>
+        <div class="topbar-right">
+          <span id="today"></span
+          ><span class="connection" id="connection">Conectando…</span>
+        </div>
+      </header>
+      <main id="content" aria-live="polite">
+        <div class="empty">Cargando tu espacio de trabajo…</div>
+      </main>
+      <footer class="workspace-footer">
+        <span>Gestión del taller</span><span id="last-update"></span>
+      </footer>
+    </div>
+    <nav id="mobile-navigation" aria-label="Accesos rápidos"></nav>
+    <dialog id="dialog" aria-labelledby="dialog-title">
+      <div class="dialog-head">
+        <h2 id="dialog-title"></h2>
+        <button
+          type="button"
+          id="dialog-close"
+          class="icon-button"
+          aria-label="Cerrar"
+        >
+          ×
+        </button>
+      </div>
+      <div id="dialog-content"></div>
+    </dialog>
+    <div id="toast" role="status" hidden></div>
+  </body>
+</html>

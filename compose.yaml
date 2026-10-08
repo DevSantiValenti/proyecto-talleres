@@ -1,0 +1,64 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: lavadero
+      MYSQL_USER: lavadero
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Definir DB_PASSWORD en .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Definir MYSQL_ROOT_PASSWORD en .env}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", 'MYSQL_PWD="$$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u "$$MYSQL_USER" -e "SELECT 1" "$$MYSQL_DATABASE"']
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks: [backend]
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:mysql://db:3306/lavadero
+      DB_USER: lavadero
+      DB_PASSWORD: ${DB_PASSWORD}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Definir ADMIN_PASSWORD en .env}
+      BUSINESS_NAME: ${BUSINESS_NAME:-Mi taller}
+      APP_BASE_URL: https://${DOMAIN:?Definir DOMAIN en .env}
+      WHATSAPP_ENABLED: ${WHATSAPP_ENABLED:-false}
+      WHATSAPP_TOKEN: ${WHATSAPP_TOKEN:-}
+      WHATSAPP_PHONE_ID: ${WHATSAPP_PHONE_ID:-}
+      WHATSAPP_APP_SECRET: ${WHATSAPP_APP_SECRET:-}
+      WHATSAPP_VERIFY_TOKEN: ${WHATSAPP_VERIFY_TOKEN:-}
+      WHATSAPP_TEMPLATE: ${WHATSAPP_TEMPLATE:-recordatorio_service}
+      WHATSAPP_LANGUAGE: ${WHATSAPP_LANGUAGE:-es_AR}
+      WHATSAPP_GRAPH_VERSION: ${WHATSAPP_GRAPH_VERSION:-v23.0}
+    networks: [backend, frontend]
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [app]
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [frontend]
+volumes:
+  mysql_data:
+  caddy_data:
+  caddy_config:
+networks:
+  backend:
+    internal: true
+  frontend:

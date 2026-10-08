@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title th:text="'Ingresar · '+${negocio}">Ingresar</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="icon" href="/img/marca.svg" type="image/svg+xml" />
+  </head>
+  <body class="login-page">
+    <main class="login-layout">
+      <section class="login-card">
+        <a class="brand" href="/"
+          ><span class="brand-mark">T</span
+          ><span th:text="${negocio}">Mi taller</span></a
+        >
+        <h2>Ingresar al taller</h2>
+        <p class="muted">Ingresá con tu usuario y contraseña.</p>
+        <div class="notice danger" th:if="${param.error}">
+          Usuario o contraseña incorrectos.
+        </div>
+        <div class="notice" th:if="${param.logout}">Cerraste tu sesión.</div>
+        <div class="notice" th:if="${param.expired}">
+          Tu cuenta fue actualizada. Ingresá nuevamente.
+        </div>
+        <form th:action="@{/login}" method="post">
+          <label
+            >Usuario<input
+              name="username"
+              autocomplete="username"
+              required
+              autofocus /></label
+          ><label
+            >Contraseña<input
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required /></label
+          ><button class="primary full">Ingresar</button>
+        </form>
+        <p class="fine">
+          Acceso exclusivo del negocio. Los clientes pueden consultar su
+          vehículo desde el QR.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{$DOMAIN} {
+    request_body {
+        max_size 1MB
+    }
+    reverse_proxy app:8080 {
+        flush_interval -1
+        health_uri /actuator/health
+    }
+    # No habilitar access logs con URLs completas: contienen tokens de los QR.
+}
