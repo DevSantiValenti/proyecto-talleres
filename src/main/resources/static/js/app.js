@@ -1,6 +1,7 @@
 "use strict";
 const $ = (s) => document.querySelector(s);
 const mode = document.body.dataset.modo;
+const businessName = document.body.dataset.negocio || "GVG Factory Motos";
 const isAdmin = mode === "ADMIN";
 const readOnly = mode === "PANTALLA";
 const S = {
@@ -211,7 +212,7 @@ function nav() {
       ? `<details id="admin-navigation" ${expanded ? "open" : ""}><summary>Administración</summary>${secondary.map(link).join("")}</details>`
       : "") +
     (!readOnly
-      ? '<a href="/pantalla" target="_blank" rel="noopener">Pantalla del taller</a>'
+      ? '<a href="/pantalla" target="_blank" rel="noopener">Pantalla de GVG Factory Motos</a>'
       : "");
   $("#mobile-navigation").innerHTML = isAdmin
     ? primary.slice(0, 3).map(link).join("")
@@ -300,7 +301,8 @@ function render() {
   ].map((e) => ({ id: e.id, name: e.name, value: e.value }));
   nav();
   $("#breadcrumb").textContent =
-    "Taller / " +
+    businessName +
+    " / " +
     ({
       resumen: "Resumen",
       cola: "Trabajo en curso",
@@ -369,7 +371,7 @@ function dashboard() {
   ];
   return (
     heading(
-      "Resumen del taller",
+      "Resumen de " + businessName,
       "Una mirada a lo que está pasando hoy.",
       btn("nueva-orden", "Nueva orden", "", "", "primary"),
     ) +

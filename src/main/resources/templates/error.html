@@ -1,13 +1,28 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>No se pudo abrir la página</title>
+    <title th:text="${negocio}+' · No se pudo abrir la página'">
+      GVG Factory Motos · No se pudo abrir la página
+    </title>
     <link rel="stylesheet" href="/css/app.css" />
-    <link rel="icon" href="/img/marca.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/img/gvg-factory-logo-transparente.png"
+      type="image/png"
+    />
   </head>
   <body class="public-page">
+    <header class="public-header">
+      <img
+        class="brand-logo"
+        src="/img/gvg-factory-logo-transparente.png"
+        width="96"
+        height="96"
+        alt=""
+      /><strong th:text="${negocio}">GVG Factory Motos</strong>
+    </header>
     <main class="public-main">
       <div class="empty">
         <h1>No se pudo abrir esta página</h1>

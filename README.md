@@ -1,4 +1,6 @@
-# Gestión de Taller
+# GVG Factory Motos
+
+La marca se define en `app.nombre` de `application.properties` y se utiliza en las pantallas, fichas y PDFs. El logo está en `resources/static/img/gvg-factory-logo-transparente.png`.
 
 Aplicación web en Java 21 / Spring Boot 4.1.1, Thymeleaf y MySQL. Aplicación exclusiva para taller mecánico, con órdenes, repuestos, personal, fichas permanentes, historial y recordatorios.
 

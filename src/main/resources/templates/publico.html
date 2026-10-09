@@ -4,22 +4,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="robots" content="noindex,nofollow" />
-    <title th:text="${negocio}+' · Tu vehículo'">Tu vehículo</title>
+    <title th:text="${negocio}+' · Tu vehículo'">GVG Factory Motos · Tu vehículo</title>
     <link rel="stylesheet" href="/css/app.css" />
     <script src="/js/publico.js" defer></script>
-    <link rel="icon" href="/img/marca.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/img/gvg-factory-logo-transparente.png"
+      type="image/png"
+    />
   </head>
   <body class="public-page" th:attr="data-modo=${modo},data-token=${token}">
     <header class="public-header">
-      <span class="brand-mark">T</span
-      ><strong th:text="${negocio}">Mi taller</strong
+      <img
+        class="brand-logo"
+        src="/img/gvg-factory-logo-transparente.png"
+        alt=""
+        width="96"
+        height="96"
+      />
+      <strong th:text="${negocio}">GVG Factory Motos</strong
       ><span class="connection" id="connection">Conectando…</span>
     </header>
     <main class="public-main" id="public-content" aria-live="polite">
       <div class="empty">Consultando tu vehículo…</div>
     </main>
     <footer class="public-footer">
-      Información actualizada por tu taller.<br /><span id="last-update"></span>
+      Información actualizada por
+      <span th:text="${negocio}">GVG Factory Motos</span>.<br /><span
+        id="last-update"
+      ></span>
     </footer>
   </body>
 </html>

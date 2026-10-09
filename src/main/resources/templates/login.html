@@ -3,18 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title th:text="'Ingresar · '+${negocio}">Ingresar</title>
+    <title th:text="'Ingresar · '+${negocio}">Ingresar · GVG Factory Motos</title>
     <link rel="stylesheet" href="/css/app.css" />
-    <link rel="icon" href="/img/marca.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/img/gvg-factory-logo-transparente.png"
+      type="image/png"
+    />
   </head>
   <body class="login-page">
     <main class="login-layout">
       <section class="login-card">
         <a class="brand" href="/"
-          ><span class="brand-mark">T</span
-          ><span th:text="${negocio}">Mi taller</span></a
+          ><img
+            class="brand-logo"
+            src="/img/gvg-factory-logo-transparente.png"
+            alt=""
+            width="96"
+            height="96"
+          />
+          <span th:text="${negocio}">GVG Factory Motos</span></a
         >
-        <h2>Ingresar al taller</h2>
+        <h2>Ingresar al panel</h2>
         <p class="muted">Ingresá con tu usuario y contraseña.</p>
         <div class="notice danger" th:if="${param.error}">
           Usuario o contraseña incorrectos.

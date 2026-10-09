@@ -28,7 +28,6 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Definir ADMIN_PASSWORD en .env}
-      BUSINESS_NAME: ${BUSINESS_NAME:-Mi taller}
       APP_BASE_URL: https://${DOMAIN:?Definir DOMAIN en .env}
       WHATSAPP_ENABLED: ${WHATSAPP_ENABLED:-false}
       WHATSAPP_TOKEN: ${WHATSAPP_TOKEN:-}

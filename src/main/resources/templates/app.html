@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="csrf-token" th:content="${_csrf.token}" />
     <meta name="csrf-header" th:content="${_csrf.headerName}" />
-    <title th:text="${negocio}">Mi taller</title>
+    <title th:text="${negocio}">GVG Factory Motos</title>
     <link rel="stylesheet" href="/css/app.css" />
     <script src="/js/app.js" defer></script>
-    <link rel="icon" href="/img/marca.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/img/gvg-factory-logo-transparente.png"
+      type="image/png"
+    />
   </head>
-  <body th:attr="data-modo=${modo},data-rol=${rol}">
+  <body th:attr="data-modo=${modo},data-rol=${rol},data-negocio=${negocio}">
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="/"
-        ><span class="brand-mark">T</span
-        ><span th:text="${negocio}">Mi taller</span></a
+        ><img
+          class="brand-logo"
+          src="/img/gvg-factory-logo-transparente.png"
+          alt=""
+          width="96"
+          height="96"
+        />
+        <span th:text="${negocio}">GVG Factory Motos</span></a
       >
       <p class="nav-caption">ESPACIO DE TRABAJO</p>
       <button
@@ -56,7 +66,7 @@
           aria-label="Abrir menú"
         >
           ☰</button
-        ><span id="breadcrumb">Taller / Órdenes</span>
+        ><span id="breadcrumb" th:text="${negocio}">GVG Factory Motos</span>
         <div class="topbar-right">
           <span id="today"></span
           ><span class="connection" id="connection">Conectando…</span>
@@ -66,7 +76,8 @@
         <div class="empty">Cargando tu espacio de trabajo…</div>
       </main>
       <footer class="workspace-footer">
-        <span>Gestión del taller</span><span id="last-update"></span>
+        <span th:text="${negocio}">GVG Factory Motos</span
+        ><span id="last-update"></span>
       </footer>
     </div>
     <nav id="mobile-navigation" aria-label="Accesos rápidos"></nav>
