@@ -189,11 +189,133 @@ summary {
   min-height: 40px;
   padding: 8px 0;
 }
-.more-actions {
-  margin-top: 10px;
+.vehicle-actions {
+  width: 340px;
+  max-width: 100%;
 }
-.more-actions > button {
-  margin: 3px;
+.more-actions {
+  margin-top: 12px;
+  min-width: 0;
+}
+.actions > .more-actions {
+  margin: 0;
+}
+.actions > .more-actions[open] {
+  flex-basis: 100%;
+}
+.more-actions > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid #ccd7cf;
+  border-radius: 8px;
+  background: white;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+  list-style: none;
+  user-select: none;
+}
+.more-actions > summary::-webkit-details-marker {
+  display: none;
+}
+.more-actions > summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  margin-left: 7px;
+}
+.more-actions > summary:hover {
+  background: #f0f5f1;
+  border-color: #93aa9b;
+}
+.more-actions[open] > summary {
+  background: #edf5ef;
+  color: var(--teal-dark);
+  border-color: #9fbaa9;
+}
+.more-actions[open] > summary::after {
+  transform: translateY(2px) rotate(225deg);
+}
+.options-dots {
+  font-size: 19px;
+  font-weight: bold;
+  line-height: 12px;
+  letter-spacing: 1px;
+}
+.options-panel {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid #dce7df;
+  border-radius: 10px;
+  background: #f6f9f6;
+}
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.options-panel .option-action {
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 14px;
+  border-color: #e0e8e2;
+  background: white;
+}
+.options-panel .option-action:hover {
+  border-color: #92af9d;
+  background: #edf5ef;
+}
+.option-action strong {
+  display: block;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+.option-action small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  font-weight: normal;
+}
+.options-panel > button {
+  margin: 4px;
+}
+.options-panel .options-note {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width: 760px) {
+  .more-actions > summary {
+    min-height: 44px;
+  }
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+  .actions > .more-actions {
+    flex: 1 1 auto;
+  }
+  .actions > .more-actions > summary {
+    width: 100%;
+    justify-content: center;
+  }
+  .options-panel {
+    padding: 10px;
+  }
+  .options-panel > button {
+    display: flex;
+    width: 100%;
+    margin: 8px 0 0;
+  }
 }
 .stage-row {
   display: grid;

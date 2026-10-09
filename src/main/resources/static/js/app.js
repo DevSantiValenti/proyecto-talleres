@@ -76,6 +76,8 @@ const badge = (x) =>
   `<span class="badge ${escape(x)}">${escape(labels[x] || x)}</span>`;
 const btn = (action, label, id = "", extra = "", cls = "small") =>
   `<button class="${cls}" data-action="${action}" data-id="${id}" ${extra}>${label}</button>`;
+const moreOptions = (key, content) =>
+  `<details class="more-actions" data-options="${key}"><summary id="options-${key}"><span aria-hidden="true" class="options-dots">···</span>Más opciones</summary><div class="options-panel">${content}</div></details>`;
 const empty = (title, text = "") =>
   `<div class="empty"><h3>${escape(title)}</h3><p>${escape(text)}</p></div>`;
 const heading = (title, subtitle, actions = "") =>
@@ -284,6 +286,11 @@ function ordersTable(orders) {
   );
 }
 function render() {
+  const expandedOptions = new Set(
+    [...document.querySelectorAll("#content .more-actions[open]")].map(
+      (e) => e.dataset.options,
+    ),
+  );
   const focusId = document.activeElement?.id;
   const selection = document.activeElement?.selectionStart;
   const preserved = [
@@ -317,6 +324,9 @@ function render() {
     usuarios: users,
   };
   $("#content").innerHTML = (fn[S.page] || board)();
+  document
+    .querySelectorAll("#content .more-actions")
+    .forEach((e) => (e.open = expandedOptions.has(e.dataset.options)));
   for (const item of preserved) {
     const e = item.id
       ? document.getElementById(item.id)
@@ -440,7 +450,7 @@ function vehicles() {
             "Sin cliente",
         ),
         `${v.kilometraje ?? "Sin lectura"}${v.kilometraje !== null ? " km" : ""}<small>${date(v.kilometrajeFecha, true)}</small>`,
-        `<div class="actions">${btn("vehiculo-historial", "Historial", v.id)}<details class="more-actions"><summary>Más opciones</summary>${btn("vehiculo-form", "Editar vehículo", v.id)}${btn("lectura", "Registrar km", v.id)}</details><a class="button small" href="${escape(v.enlace)}" target="_blank" rel="noopener">Ficha</a><a class="button small" href="/admin/vehiculos/${v.id}/qr.pdf" target="_blank" rel="noopener">QR / PDF</a></div>`,
+        `<div class="actions vehicle-actions">${btn("vehiculo-historial", "Historial", v.id)}<a class="button small" href="${escape(v.enlace)}" target="_blank" rel="noopener">Ficha</a><a class="button small" href="/admin/vehiculos/${v.id}/qr.pdf" target="_blank" rel="noopener">QR / PDF</a>${moreOptions("vehiculo-" + v.id, `<div class="options-grid">${btn("vehiculo-form", "<span><strong>Editar vehículo</strong><small>Patente, modelo y cliente</small></span>", v.id, "", "option-action")}${btn("lectura", "<span><strong>Registrar km</strong><small>Actualizar la lectura del odómetro</small></span>", v.id, "", "option-action")}</div>`)}</div>`,
       ]),
     )}</section>`
   );
@@ -802,7 +812,7 @@ async function detalle(id) {
   const service = (s) => {
     const activo = open && !["TERMINADO", "CANCELADO"].includes(s.estado);
     const aprobado = o.versionAprobada === o.presupuestoVersion;
-    return `<article class="detail-block"><div class="panel-header"><h3>${escape(s.nombre)}</h3>${badge(s.estado)}</div><p>${escape(s.etapa)} · ${money(s.precio)}</p><p class="muted">${s.empleados.map((e) => escape(e.nombre)).join(", ") || "Sin personal asignado"}</p>${s.resumenPublico ? `<p class="work-description">${escape(s.resumenPublico)}</p>` : ""}<div class="actions">${activo ? btn("asignar", "Asignar personal", id, `data-sid="${s.id}"`) + (aprobado ? btn("avanzar", "Siguiente etapa", id, `data-sid="${s.id}"`, "primary") : "") : ""}${o.estado !== "CANCELADO" && s.estado !== "CANCELADO" ? btn("resumen", "Qué se hizo", id, `data-sid="${s.id}"`) : ""}</div><details class="more-actions"><summary>Más opciones</summary><p>Comisión: ${s.tipoComision === "FIJA" ? money(s.comision) : s.comision + "%"}</p>${open && s.estado === "TERMINADO" ? btn("reabrir", "Reabrir servicio", id, `data-sid="${s.id}"`) : ""}${activo && !o.pago ? btn("precio", "Cambiar precio", id, `data-sid="${s.id}"`) + btn("cancelar-servicio", "Cancelar servicio", id, `data-sid="${s.id}"`, "danger-button") : ""}</details></article>`;
+    return `<article class="detail-block"><div class="panel-header"><h3>${escape(s.nombre)}</h3>${badge(s.estado)}</div><p>${escape(s.etapa)} · ${money(s.precio)}</p><p class="muted">${s.empleados.map((e) => escape(e.nombre)).join(", ") || "Sin personal asignado"}</p>${s.resumenPublico ? `<p class="work-description">${escape(s.resumenPublico)}</p>` : ""}<div class="actions">${activo ? btn("asignar", "Asignar personal", id, `data-sid="${s.id}"`) + (aprobado ? btn("avanzar", "Siguiente etapa", id, `data-sid="${s.id}"`, "primary") : "") : ""}${o.estado !== "CANCELADO" && s.estado !== "CANCELADO" ? btn("resumen", "Qué se hizo", id, `data-sid="${s.id}"`) : ""}</div>${moreOptions("servicio-" + s.id, `<p class="options-note">Comisión: ${s.tipoComision === "FIJA" ? money(s.comision) : s.comision + "%"}</p>${open && s.estado === "TERMINADO" ? btn("reabrir", "Reabrir servicio", id, `data-sid="${s.id}"`) : ""}${activo && !o.pago ? btn("precio", "Cambiar precio", id, `data-sid="${s.id}"`) + btn("cancelar-servicio", "Cancelar servicio", id, `data-sid="${s.id}"`, "danger-button") : ""}`)}</article>`;
   };
   modal(
     "Orden #" + o.id,
@@ -1166,6 +1176,23 @@ function ajuste() {
       }),
   );
 }
+// Native disclosure controls remain usable with keyboard and without JavaScript.
+document.addEventListener("click", (e) => {
+  document.querySelectorAll(".more-actions[open]").forEach((details) => {
+    if (!details.contains(e.target) || e.target.closest("[data-action]"))
+      details.open = false;
+  });
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  const open = [...document.querySelectorAll(".more-actions[open]")];
+  if (!open.length) return;
+  e.preventDefault();
+  const current =
+    open.find((d) => d.contains(document.activeElement)) || open[0];
+  open.forEach((d) => (d.open = false));
+  current.querySelector("summary").focus();
+});
 document.addEventListener("click", async (e) => {
   const page = e.target.closest("[data-page]");
   if (page) {
