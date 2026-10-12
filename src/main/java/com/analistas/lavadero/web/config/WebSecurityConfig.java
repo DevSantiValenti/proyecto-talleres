@@ -60,7 +60,29 @@ public class WebSecurityConfig {
                                         .hasAnyRole("ADMIN", "OPERACION", "PANTALLA")
                                         .anyRequest()
                                         .authenticated())
-                .formLogin(f -> f.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
+                .formLogin(
+                        f ->
+                                f.loginPage("/login")
+                                        .successHandler(
+                                                (request, response, authentication) -> {
+                                                    var destino = "/pantalla";
+                                                    if (authentication.getAuthorities().stream()
+                                                            .anyMatch(
+                                                                    a ->
+                                                                            a.getAuthority()
+                                                                                    .equals(
+                                                                                            "ROLE_ADMIN")))
+                                                        destino = "/admin";
+                                                    else if (authentication.getAuthorities().stream()
+                                                            .anyMatch(
+                                                                    a ->
+                                                                            a.getAuthority()
+                                                                                    .equals(
+                                                                                            "ROLE_OPERACION")))
+                                                        destino = "/operacion";
+                                                    response.sendRedirect(request.getContextPath() + destino);
+                                                })
+                                        .permitAll())
                 .logout(l -> l.logoutSuccessUrl("/login?logout"))
                 .sessionManagement(
                         s ->
